@@ -6,8 +6,15 @@
 
 _... opsgang/aws_env with mysql client - default CMD will execute a file of sql (optionally gzipped)_
 
+**Execute arbitrary SQL or run an optionally-gzipped file of sql commands stored on the host or in S3.**
 
-See [opsgang/aws_env] [1].
+See [opsgang/aws\_env] [1] for other functionality available in this container.
+
+## BUILDING
+
+**master branch built at shippable.com**
+
+[![Run Status](https://api.shippable.com/projects/58e3c53abefe150700ec299b/badge?branch=master)](https://api.shippable.com/projects/58e3c53abefe150700ec299b)
 
 # EXAMPLES
 
