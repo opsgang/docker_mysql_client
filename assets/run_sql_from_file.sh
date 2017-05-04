@@ -30,6 +30,8 @@ _check_var_defined() {
     local var_name="$1"
     local var_val="${!var_name}"
     [[ -z $var_val ]] && return 1
+
+    return 0
 }
 
 required_vars() {
