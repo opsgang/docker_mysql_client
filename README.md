@@ -1,8 +1,5 @@
 [1]: https://github.com/opsgang/docker_aws_env "github repo for aws_env docker image"
 # docker\_aws\_mysql\_client
-<!--
-    vim: et sr sw=4 ts=4 smartindent syntax=markdown:
--->
 
 ... opsgang/aws\_env with mysql client - default CMD will execute a file of sql (optionally gzipped)
 
