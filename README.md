@@ -1,10 +1,10 @@
-# docker\_aws\_mysql\_client
 [1]: https://github.com/opsgang/docker_aws_env "github repo for aws_env docker image"
+# docker\_aws\_mysql\_client
 <!--
     vim: et sr sw=4 ts=4 smartindent syntax=markdown:
 -->
 
-_... opsgang/aws_env with mysql client - default CMD will execute a file of sql (optionally gzipped)_
+... opsgang/aws\_env with mysql client - default CMD will execute a file of sql (optionally gzipped)
 
 **Execute arbitrary SQL or run an optionally-gzipped file of sql commands stored on the host or in S3.**
 
