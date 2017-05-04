@@ -5,7 +5,7 @@
 
 **Execute arbitrary SQL or run an optionally-gzipped file of sql commands stored on the host or in S3.**
 
-See [opsgang/aws\_env] [1] for other functionality available in this container.
+See [opsgang/aws\_env][1] for other functionality available in this container.
 
 ## BUILDING
 
@@ -19,22 +19,21 @@ See [opsgang/aws\_env] [1] for other functionality available in this container.
 
 # ... run arbitary sql query
 
-QUERY="mysql -h host.example.com --port 1234 -u bob -p$(cat db_password.txt) my_db -e 'select * from my_table;'"
-docker run -v /path/to/sqlfile:/sqlfile -t --rm opsgang/aws_mysql_client:stable "/bin/bash -C $QUERY"
+CMD="mysql -h host.example.com --port 1234 -u bob -p$(cat db_password.txt) my_db"
+QUERY="select 1;"
+docker run -t --rm opsgang/aws_mysql_client:stable $CMD -e "$QUERY"
 
 ```
 
 ```bash
-
 # ... sql script stored in s3, using host's IAM - file can be gzipped or not.
 export file=s3://some-bucket/path/to/sql #
 
 export db_host="localhost" db_user="bob" db_pass="$(cat secret.txt)" # change values as needed
 
 docker run -t --rm \
-    --env db_host --env db_user --env db_pass --env file \
+    --env DB_HOST --env DB_USER --env DB_PASS --env FILE \
     opsgang/aws_mysql_client:stable
-
 ```
 
 ```bash
@@ -47,7 +46,7 @@ export AWS_DEFAULT_REGION AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY # these should
 
 docker run -t --rm \
     --env DB_HOST --env DB_USER --env DB_PASS --env FILE \
-    --env AWS_DEFAULT_REGION --env AWS_ACCESS_KEY_ID --env AWS_SECRET_ACCESS_KEY
+    --env AWS_DEFAULT_REGION --env AWS_ACCESS_KEY_ID --env AWS_SECRET_ACCESS_KEY \
     opsgang/aws_mysql_client:stable
 
 ```

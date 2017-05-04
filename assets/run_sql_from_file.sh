@@ -3,19 +3,20 @@
 #
 # To run, set the following vars in your environment:
 #
-# $DBHOST: location of remote DB
-# $DBPORT: listening mysql port
-# $DBUSER: the user to connect as
-# $DBPASS: the user's pword.
+# $DB_HOST: location of remote DB
+# $DB_PORT: listening mysql port
+# $DB_USER: the user to connect as
+# $DB_PASS: the user's pword.
 # $FILE: s3:// uri or absolute path to local file
 #
 REQUIRED_VARS="
-    DBHOST
-    DBPASS
-    DBPORT
-    DBUSER
+    DB_HOST
+    DB_PASS
+    DB_USER
     FILE
 "
+
+DB_PORT="${DB_PORT:-3306}"
 
 _set_SC() {
     if [[ $0 =~ ^-?bash$ ]]; then
@@ -58,14 +59,14 @@ SC=$(_set_SC)
 # ... validate required vars
 required_vars "$REQUIRED_VARS" || exit 1
 
-MYSQL_OPTS="--host=$DBHOST --port=$DBPORT --user=$DBUSER --password=$DBPASS"
+MYSQL_OPTS="--host=$DB_HOST --port=$DB_PORT --user=$DB_USER --password=$DB_PASS"
 [[ ! -z "$DBNAME" ]] && MYSQL_OPTS="$MYSQL_OPTS $DBNAME"
 
 # ... test can connect to specific db
-i "... verifying can connect to $DBHOST:$DBPORT (db ${DBNAME:-NOT PROVIDED}) with provided creds"
+i "... verifying can connect to $DB_HOST:$DB_PORT (db ${DBNAME:-NOT PROVIDED}) with provided creds"
 if ! mysql $MYSQL_OPTS -e 'select "1";'
 then
-    e "... couldn't connect to mysql host:port<$DBHOST:$DBPORT> (db ${DBNAME:-NOT PROVIDED})"
+    e "... couldn't connect to mysql host:port<$DB_HOST:$DB_PORT> (db ${DBNAME:-NOT PROVIDED})"
     exit 1
 fi
 
