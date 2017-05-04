@@ -62,13 +62,13 @@ SC=$(_set_SC)
 required_vars "$REQUIRED_VARS" || exit 1
 
 MYSQL_OPTS="--host=$DB_HOST --port=$DB_PORT --user=$DB_USER --password=$DB_PASS"
-[[ ! -z "$DBNAME" ]] && MYSQL_OPTS="$MYSQL_OPTS $DBNAME"
+[[ ! -z "$DB_NAME" ]] && MYSQL_OPTS="$MYSQL_OPTS $DB_NAME"
 
 # ... test can connect to specific db
-i "... verifying can connect to $DB_HOST:$DB_PORT (db ${DBNAME:-NOT PROVIDED}) with provided creds"
+i "... verifying can connect to $DB_HOST:$DB_PORT (db ${DB_NAME:-NOT PROVIDED}) with provided creds"
 if ! mysql $MYSQL_OPTS -e 'select "1";'
 then
-    e "... couldn't connect to mysql host:port<$DB_HOST:$DB_PORT> (db ${DBNAME:-NOT PROVIDED})"
+    e "... couldn't connect to mysql host:port<$DB_HOST:$DB_PORT> (db ${DB_NAME:-NOT PROVIDED})"
     exit 1
 fi
 
@@ -82,6 +82,7 @@ fi
 
 i "... checking if gzipped"
 if gunzip -t $LFILE 2>/dev/null
+then
     UNZFILE=/var/tmp/my.sql
     i "... gunzipping to /var/tmp/my.sql"
     ! gunzip -c $LFILE >$UNZFILE && e "... failed to gunzip $LFILE" && exit 1
