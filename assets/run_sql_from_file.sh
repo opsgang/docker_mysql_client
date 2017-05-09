@@ -9,55 +9,14 @@
 # $DB_PASS: the user's pword.
 # $FILE: s3:// uri or absolute path to local file
 #
+
+. /functions || exit 1
 REQUIRED_VARS="
     DB_HOST
     DB_PASS
     DB_USER
     FILE
 "
-
-DB_PORT="${DB_PORT:-3306}"
-
-_set_SC() {
-    if [[ $0 =~ ^-?bash$ ]]; then
-        echo "bash"
-    else
-        basename $(realpath -- $0)
-    fi
-}
-
-_check_var_defined() {
-    local var_name="$1"
-    local var_val="${!var_name}"
-    [[ -z $var_val ]] && return 1
-
-    return 0
-}
-
-required_vars() {
-    local rc=0
-    local required_vars="$1"
-    local this_var
-    for this_var in $required_vars; do
-        if ! _check_var_defined $this_var
-        then
-            e "\$$this_var must be set in env"
-            rc=1
-        fi
-    done
-
-    return $rc
-}
-# e() / i() ... print log msg
-e() {
-    echo -e "ERROR $SC: $*" >&2
-}
-
-i() {
-    echo -e "INFO $SC: $*"
-}
-
-SC=$(_set_SC)
 # ... validate required vars
 required_vars "$REQUIRED_VARS" || exit 1
 

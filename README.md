@@ -11,7 +11,7 @@ See [opsgang/aws\_env][1] for other functionality available in this container.
 
 **master branch built at shippable.com**
 
-[![Run Status](https://api.shippable.com/projects/58e3c53abefe150700ec299b/badge?branch=master)](https://api.shippable.com/projects/58e3c53abefe150700ec299b)
+[![Run Status](https://api.shippable.com/projects/590c212289d0490700d769bc/badge?branch=master)](https://app.shippable.com/github/opsgang/docker_aws_mysql_client)
 
 # EXAMPLES
 
