@@ -19,4 +19,4 @@ RUN cp -a assets/. /   \
     && apk --no-cache --update add mysql-client \
     && rm -rf /var/cache/apk/* /assets 2>/dev/null
 
-CMD ["bash", "-C", "/run_sql_from_file.sh"]
+CMD ["bash", "-C", "/usage.sh"]

@@ -39,5 +39,18 @@ i() {
     echo -e "INFO $SC: $*"
 }
 
+bold_i() {
+    i "\033[1;37m${*}\033[0m"
+}
+
+yellow_i() {
+    i "\033[1;33m${*}\033[0m"
+}
+
+red_e() {
+    e "\033[1;31m${*}\033[0m"
+}
+
+THIS_IMAGE_NAME="${THIS_IMAGE_NAME:-opsgang/aws_mysql_client:stable}"
 DB_PORT="${DB_PORT:-3306}"
 SC=$(_set_SC)

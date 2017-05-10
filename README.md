@@ -15,6 +15,10 @@ See [opsgang/aws\_env][1] for other functionality available in this container.
 
 # EXAMPLES
 
+**Most examples below use /run\_sql\_from\_file.sh as the helper script to run.**
+**Run container's default entrypoint to see about other available helper scripts**
+**... or look in [the assets dir in github](assets)**
+
 ```bash
 
 # ... run arbitary sql query
@@ -27,27 +31,26 @@ docker run -t --rm opsgang/aws_mysql_client:stable $CMD -e "$QUERY"
 
 ```bash
 # ... sql script stored in s3, using host's IAM - file can be gzipped or not.
-export file=s3://some-bucket/path/to/sql #
+export FILE=s3://some-bucket/path/to/sql #
 
-export db_host="localhost" db_user="bob" db_pass="$(cat secret.txt)" # change values as needed
+export DB_HOST="localhost" DB_USER="bob" DB_PASS="$(cat secret.txt)" # change values as needed
 
 docker run -t --rm \
     --env DB_HOST --env DB_USER --env DB_PASS --env FILE \
-    opsgang/aws_mysql_client:stable
+    opsgang/aws_mysql_client:stable /bin/bash -c /run_sql_from_file.sh
 ```
 
 ```bash
-
 # ... sql script in S3, passing AWS creds - file can be gzipped or not
 export file=s3://some-bucket/path/to/sql #
 
-export db_host="localhost" db_user="bob" db_pass="$(cat secret.txt)" # change values as needed
+export DB_HOST="localhost" DB_USER="bob" DB_PASS="$(cat secret.txt)" # change values as needed
 export AWS_DEFAULT_REGION AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY # these should be defined already
 
 docker run -t --rm \
     --env DB_HOST --env DB_USER --env DB_PASS --env FILE \
     --env AWS_DEFAULT_REGION --env AWS_ACCESS_KEY_ID --env AWS_SECRET_ACCESS_KEY \
-    opsgang/aws_mysql_client:stable
+    opsgang/aws_mysql_client:stable /bin/bash -c /run_sql_from_file.sh
 
 ```
 
@@ -62,7 +65,8 @@ export DB_HOST="localhost" DB_USER="bob" DB_PASS="$(cat secret.txt)" # change va
 docker run -t --rm \
     -v /path/to/sqlfile:/sqlfile \
     --env DB_HOST --env DB_USER --env DB_PASS --env FILE \
-    opsgang/aws_mysql_client:stable
+    opsgang/aws_mysql_client:stable /bin/bash -c /run_sql_from_file.sh
+
 
 ```
 
