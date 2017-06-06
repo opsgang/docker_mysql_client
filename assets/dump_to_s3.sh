@@ -34,14 +34,16 @@ fi
 
 LFILE=/var/tmp/$(basename $S3_FILE)
 
+rc=0
 if [[ -z "$GZIP" ]]; then
     i "... dumping to file"
-    mysqldump $MYSQL_OPTS $DUMP_OPTS --result-file=$LFILE
+    mysqldump $MYSQL_OPTS $DUMP_OPTS --result-file=$LFILE || rc=1
 else
     i "... dumping to file, gzipped"
-    mysqldump $MYSQL_OPTS $DUMP_OPTS | gzip -c >$LFILE 
+    set -o pipefail
+    mysqldump $MYSQL_OPTS $DUMP_OPTS | gzip -c >$LFILE || rc=1
 fi
-[[ $? -ne 0 ]] && e "... failed to dump $DB_HOST to file" && exit 1
+[[ $rc -ne 0 ]] && e "... failed to dump $DB_HOST to file" && exit 1
 
 i "... uploading file to s3"
 ! aws s3 cp $LFILE $S3_FILE && e "... couldn't upload $LFILE to $S3_FILE" && exit 1
