@@ -38,7 +38,7 @@ EOF
 s=/dump_to_s3.sh
 ep="/bin/bash -c $s"
 yellow_i "--- $s\n"
-i "... run a mysqldump and send result to an S3 location, optionally gzipped"
+i "... mysqldump and send result to an S3 location, optionally gzipped"
 i "    The file can be in S3, or available to container e.g. via a volume or docker copy"
 cat << EOF
 
@@ -46,9 +46,31 @@ cat << EOF
     export S3_FILE=s3://some-bucket/path/to/my.sql.gz
     export DB_HOST="localhost" DB_USER="bob" DB_PASS="\${MY_PASSWORD}"
     export GZIP=true
-    export DUMP_OPTS="--opt --add-drop-database --database my_db"
+    export DUMP_OPTS="--opt --add-drop-database --databases my_db"
     docker run -t --rm \\
-        --env DB_HOST --env DB_USER --env DB_PASS --env FILE --env DUMP_OPTS \\
+        --env DB_HOST --env DB_USER --env DB_PASS --env S3_FILE --env DUMP_OPTS \\
+            $THIS_IMAGE_NAME $ep
+
+EOF
+
+s=/dump_to_file.sh
+ep="/bin/bash -c $s"
+yellow_i "--- $s\n"
+i "... mysqldump to a local file, optionally gzipped"
+i "    Mount a host volume to the container so you can use the local file after."
+cat << EOF
+
+    # e.g. ... dump my_db with some mysqldump options, to host path /my/dir/dump.sql.gz
+    # Here we mount /my/dir to /project in container.
+    #
+    export LFILE=/project/dump.sql.gz # output path INSIDE container.
+    export DB_HOST="localhost" DB_USER="bob" DB_PASS="\${MY_PASSWORD}"
+    export GZIP=true
+    export DUMP_OPTS="--opt --add-drop-database --databases my_db"
+    # DUMP_OPTS defaults to "--opt --add-drop-database --all-databases"
+    docker run -t --rm \\
+        -v /my/dir:/project \\
+        --env DB_HOST --env DB_USER --env DB_PASS --env LFILE --env DUMP_OPTS \\
             $THIS_IMAGE_NAME $ep
 
 EOF
