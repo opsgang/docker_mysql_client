@@ -10,6 +10,9 @@ MIN_DOCKER=1.11.0
 GIT_SHA_LEN=8
 IMG_TAG=candidate
 
+LIBS_VERSION=0.0.5
+LIBS_URL="https://github.com/opsgang/libs/releases/download/$LIBS_VERSION/habitual.tgz"
+
 version_gt() {
     [[ "$(printf '%s\n' "$@" | sort -V | head -n 1)" != "$1" ]]
 }
@@ -88,6 +91,7 @@ labels() {
     cat<<EOM
     --label version=$(date +'%Y%m%d%H%M%S')
     --label opsgang.mysql_client_version=$myv
+    --label opsgang.libs_version=$LIBS_VERSION
     --label opsgang.build_git_uri=$gu
     --label opsgang.build_git_sha=$gs
     --label opsgang.build_git_branch=$gb
@@ -96,9 +100,22 @@ labels() {
 EOM
 }
 
+get_libs() {
+    local url="$1"
+    local dest="$2"
+    (
+        set -o pipefail
+        curl -sS -L -H 'Accept: application/octet-stream' "$url" \
+        | tar -xzv -C $dest
+    )
+}
+
 docker_build(){
 
     valid_docker_version || return 1
+
+    # ... fetch opsgang/libs
+    get_libs "$LIBS_URL" "./assets" || return 1
 
     labels=$(labels) || return 1
     n=$(img_name) || return 1

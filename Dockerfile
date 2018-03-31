@@ -1,15 +1,14 @@
 # vim: et sr sw=4 ts=4 smartindent syntax=dockerfile:
 FROM opsgang/aws_env:stable
 
-MAINTAINER jinal--shah <jnshah@gmail.com>
 LABEL \
       name="opsgang/aws_mysql_client"  \
       vendor="sortuniq"                \
       description="\
-... adds mysql client;\n\
-... includes default script to execute \
-sql from a file (can be gzipped) from S3 \
-or container file system (e.g. mounted)\
+... adds mysql client and utility scripts;\n\
+    to execute sql in a local file or S3.\n\
+    or mysqldump to local storage or S3.\n\
+    In all cases, files can be gzipped. \
 "
 
 COPY assets /assets
