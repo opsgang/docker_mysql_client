@@ -88,6 +88,8 @@ labels() {
     gt=$(git describe 2>/dev/null || echo "no-git-tag")
     bb=$(built_by) || return 1
 
+    bb=$(echo $bb | sed -e 's/[" ]+/__/g')
+
     cat<<EOM
     --label version=$(date +'%Y%m%d%H%M%S')
     --label opsgang.mysql_client_version=$myv
@@ -96,7 +98,7 @@ labels() {
     --label opsgang.build_git_sha=$gs
     --label opsgang.build_git_branch=$gb
     --label opsgang.build_git_tag=$gt
-    --label opsgang.built_by="$bb"
+    --label opsgang.built_by=$bb
 EOM
 }
 
