@@ -1,10 +1,6 @@
 # vim: et sr sw=2 ts=2 smartindent:
 language: none
 
-branches:
-  only:
-    - master
-
 env:
   global:
     - IMG="aws_env"
@@ -37,17 +33,11 @@ integrations:
   hub:
     - integrationName: opsgang_dockerhubreg
       type: dockerRegistryLogin
-      branches:
-        only:
-          - master
 
   notifications:
     - integrationName: opsgang_slack_delivery
       type: slack
       recipients: "#delivery"
-      branches:
-        only:
-          - master
       on_success: always
       on_failure: always
       on_pull_request: never
