@@ -3,7 +3,7 @@ language: none
 
 env:
   global:
-    - IMG="aws_env"
+    - IMG="aws_mysql_client"
     - STABLE_TAG="stable"
     - JQ="https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux64"
 
