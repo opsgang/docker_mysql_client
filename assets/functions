@@ -73,5 +73,30 @@ to_s3() {
     [[ $1 =~ ^s3:// ]]
 }
 
+TEST_STUBS=${TEST_STUBS:-}
 THIS_IMAGE_NAME="${THIS_IMAGE_NAME:-opsgang/aws_mysql_client:stable}"
 DB_PORT="${DB_PORT:-3306}"
+
+if [[ ! -z "$TEST_STUBS" ]]; then
+    aws() {
+        local r="$1" # aws resource
+        local c="$2" # subcommand
+        local s="$3" # src file
+        local d="$4" # dest file
+
+        if [[ "$r" != "s3" ]] || [[ "$c" != "cp" ]]; then
+            e "this aws cmd has not been stubbed: aws $*"
+            return 1
+        fi
+
+        if to_s3 $s
+        then
+            f=/fixtures/example.sql
+            [[ "$s" =~ .gz$ ]] && f=$f.gz
+            cp $f $d
+        else
+            i "STUBBED cmd: aws $*"
+            return 0
+        fi
+    }
+fi
