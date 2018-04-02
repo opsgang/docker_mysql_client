@@ -12,6 +12,7 @@ env:
     - DB_HOST=localhost
     - DB_USER=t
     - DB_PASS="Pword666"
+    - SHIPPABLE_MYSQL_CMD="/usr/bin/mysqld_safe --bind-address=0.0.0.0"
 
 build:
 
