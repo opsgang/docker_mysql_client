@@ -17,8 +17,10 @@ env:
 build:
 
   ci:
-    - mysql -e "CREATE USER ${DB_USER}@${DB_HOST} IDENTIFIED BY '${DB_PASS}';" ;
-      mysql -e "GRANT ALL ON *.* TO ${DB_USER}@${DB_HOST}; FLUSH PRIVILEGES;" ;
+    - mysql -e "CREATE USER t@'%' IDENTIFIED BY '${DB_PASS}';" ;
+    - mysql -e "CREATE USER t@'localhost' IDENTIFIED BY '${DB_PASS}';" ;
+      mysql -e "GRANT ALL ON *.* TO ${DB_USER}@'%'; FLUSH PRIVILEGES;" ;
+      mysql -e "GRANT ALL ON *.* TO ${DB_USER}@'localhost'; FLUSH PRIVILEGES;" ;
       mysql -e "CREATE DATABASE example;"
     - curl -O -L $JQ
       && chmod +x jq-linux64
