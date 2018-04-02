@@ -16,6 +16,9 @@ env:
 
 build:
 
+  pre_ci_boot:
+    options: -v /fixtures
+
   ci:
     - mysql -e "CREATE USER '${DB_USER}'@'%' IDENTIFIED BY '${DB_PASS}';" ;
       mysql -e "GRANT ALL ON *.* TO '${DB_USER}'@'%'; FLUSH PRIVILEGES;" ;
@@ -25,6 +28,7 @@ build:
       && sudo mv jq-linux64 /usr/bin/jq
     - docker pull opsgang/$IMG:$STABLE_TAG || true # speed up build layers
     - bash ./build.sh # avoid aufs file-locking with new shell
+    - cp t/fixtures/* /fixtures
     - bash ./t/run.sh # tests
 
   on_success:
