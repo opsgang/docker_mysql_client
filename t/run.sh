@@ -6,6 +6,7 @@
 
 # container should print usage info when no args.
 docker rm -f t1 2>/dev/null || true
+docker rm -f t2 2>/dev/null || true
 docker rm -f def_out 2>/dev/null || true
 
 echo "running default output"
@@ -21,8 +22,12 @@ docker rm -f t1 2>/dev/null || true
 
 echo "dir:$PWD/t/fixtures"
 ls -l $PWD/t/fixtures
+echo "running docker fixtures"
+
 docker run -i --rm --name t2 \
     -v $PWD/t/fixtures:/fixtures \
     -e DB_HOST -e DB_PASS -e DB_USER \
     -e FILE=/fixtures/sql.example.gz \
     opsgang/aws_mysql_client:candidate /bin/bash -c "ls -l /fixtures"
+
+docker rm -f t2 2>/dev/null || true
