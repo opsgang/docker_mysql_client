@@ -1,20 +1,30 @@
 # vim: et sr sw=2 ts=2 smartindent:
 language: none
 
+services:
+  - mysql
+
 env:
   global:
     - IMG="aws_mysql_client"
     - STABLE_TAG="stable"
     - JQ="https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux64"
+    - DB_HOST=localhost
+    - DB_USER=t
+    - DB_PASS="Pword666"
 
 build:
 
   ci:
+    - mysql -e "CREATE USER ${DB_USER}@${DB_HOST} IDENTIFIED BY '${DB_PASS}';" ;
+      mysql -e "GRANT ALL ON *.* TO ${DB_USER}@${DB_HOST}; FLUSH PRIVILEGES;" ;
+      mysql -e "CREATE DATABASE example;"
     - curl -O -L $JQ
       && chmod +x jq-linux64
       && sudo mv jq-linux64 /usr/bin/jq
     - docker pull opsgang/$IMG:$STABLE_TAG || true # speed up build layers
     - bash ./build.sh # avoid aufs file-locking with new shell
+    - bash ./t/run.sh # tests
 
   on_success:
     - if [[ "$IS_GIT_TAG" == "true" ]] || [[ "$IS_RELEASE" == "true" ]]; then
