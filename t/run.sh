@@ -98,7 +98,7 @@ t_dump_to_gzip_file() {
         -e DEST_PATH=$out_file \
         opsgang/aws_mysql_client:candidate /dump.sh || rc=1
 
-    zcat $out_file | grep '^CREATE TABLE `products` ($' || rc=1
+    zcat $out_file | grep '^CREATE TABLE `products` ($' >/dev/null || rc=1
 
     docker rm -f $t 2>/dev/null
 
@@ -193,6 +193,7 @@ t_dump_to_s3 || RC=1
 
 # TEST 6
 t_run_gzip_s3 || RC=1
+
 dc
 
 exit $RC
