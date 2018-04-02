@@ -12,6 +12,7 @@ docker rm -f def_out 2>/dev/null || true
 #docker run -i --rm --name def_out opsgang/aws_mysql_client:candidate
 
 docker network ls
+docker network inspect bridge
 
 echo "running show databases"
 
