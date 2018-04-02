@@ -17,7 +17,7 @@ docker network inspect bridge
 echo "running show databases"
 
 docker run -i --net bridge --rm --name t1 \
-    opsgang/aws_mysql_client:candidate mysql -P 3306 --protocol=TCP -u t -pPword666 -h localhost -e 'show databases;'
+    opsgang/aws_mysql_client:candidate mysql -P 3306 --protocol=TCP --force -u t -pPword666 -h $DB_HOST -e 'show databases;'
 
 docker rm -f t1 2>/dev/null || true
 

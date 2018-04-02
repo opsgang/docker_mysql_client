@@ -9,7 +9,7 @@ env:
     - IMG="aws_mysql_client"
     - STABLE_TAG="stable"
     - JQ="https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux64"
-    - DB_HOST=localhost
+    - DB_HOST=172.17.0.1
     - DB_USER=t
     - DB_PASS="Pword666"
     - SHIPPABLE_MYSQL_CMD="/usr/bin/mysqld_safe --bind-address=0.0.0.0"
