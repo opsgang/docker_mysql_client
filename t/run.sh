@@ -12,8 +12,10 @@ echo "running default output"
 docker run -i --rm --name def_out opsgang/aws_mysql_client:candidate
 
 echo "running show databases"
-docker run -i --rm --name t1 \
-    opsgang/aws_mysql_client:candidate mysql -P 3306 --protocol=TCP -u t -pPword666 -h localhost -e 'show databases;'
+
+ifconfig -a | grep inet
+docker run -i --net host --rm --name t1 \
+    opsgang/aws_mysql_client:candidate mysql -P 3306 --protocol=TCP -u t -pPword666 -h $HOSTNAME -e 'show databases;'
 
 docker rm -f t1 2>/dev/null || true
 
