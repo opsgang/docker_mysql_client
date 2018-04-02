@@ -6,8 +6,8 @@
 
 setup_db() {
     export DB_HOST=172.17.0.3 DB_PASS=Pword666 DB_USER=tester
-    mysql -e "CREATE USER '${DB_USER}'@'${DB_HOST}' IDENTIFIED BY '${DB_PASS}';" || return 1
-    mysql -e "GRANT ALL ON *.* TO '${DB_USER}'@'${DB_HOST}'; FLUSH PRIVILEGES;" || return 1
+    mysql -e "CREATE USER '${DB_USER}'@'%' IDENTIFIED BY '${DB_PASS}';" || return 1
+    mysql -e "GRANT ALL ON *.* TO '${DB_USER}'@'%'; FLUSH PRIVILEGES;" || return 1
     mysql -e "CREATE DATABASE example;" || return 1
     return 0
 }
