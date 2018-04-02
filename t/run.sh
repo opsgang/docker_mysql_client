@@ -5,18 +5,14 @@
 #
 
 # container should print usage info when no args.
-default_cmd() {
-    export
-}
-
-default_cmd
-
-echo "candidate images:"
-docker images | grep candidate
-
 docker rm -f t1 2>/dev/null || true
+docker rm -f def_out 2>/dev/null || true
 
-docker run --rm --name t1 \
-    opsgang/aws_mysql_client:candidate /bin/bash -c "mysql -u t -p Pword666 -h localhost -e 'show databases;'"
+echo "running default output"
+docker run -i --rm --name def_out opsgang/aws_mysql_client:candidate
+
+echo "running show databases"
+docker run -i --rm --name t1 \
+    opsgang/aws_mysql_client:candidate mysql -u t -pPword666 -h localhost -e 'show databases;'
 
 docker rm -f t1 2>/dev/null || true
