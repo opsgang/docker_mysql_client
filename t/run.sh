@@ -31,17 +31,19 @@ echo "=== TEST 2 bespoke mysql cmd"
 CMD="-u $DB_USER -p$DB_PASS -h $DB_HOST"
 o=$(
     docker run -i --net bridge --rm --name t2 \
-    opsgang/$IMG:candidate mysql $CMD -e 'show databases;' || exit 1
+    opsgang/$IMG:candidate mysql $CMD -e 'show databases;' | sort || exit 1
 ) || rc=1
+
+echo "-->$o<--"
 
 echo "=== TEST 3 /run_sql_from_file.sh (gzipped local)"
 docker run -i --rm --name t3 \
     --volumes-from $SHIPPABLE_CONTAINER_NAME \
     -e DB_HOST -e DB_PASS -e DB_USER \
-    -e FILE=/fixtures/sql.example.gz \
+    -e FILE=/fixtures/example.sql.gz \
     opsgang/aws_mysql_client:candidate /run_sql_from_file.sh || RC=1
 
-mysql -e "USE example ; show tables;"
+mysql -e "use example; describe offices ;"
 
 echo "=== TEST 4 /dump.sh to GZIPPED FILE"
 export DUMP_OPTS="--opt --add-drop-database --databases example"
@@ -61,6 +63,14 @@ docker run -i --rm --name t5 \
     -e GZIP=true -e DUMP_OPTS \
     -e DEST_PATH=s3://foo/bar/example.sql.gz \
     opsgang/aws_mysql_client:candidate /dump.sh || RC=1
+
+echo "=== TEST 6 /run_sql_from_file.sh (gzipped s3)"
+docker run -i --rm --name t3 \
+    --volumes-from $SHIPPABLE_CONTAINER_NAME \
+    -e TEST_STUBS=true \
+    -e DB_HOST -e DB_PASS -e DB_USER \
+    -e FILE=s3://foo/bar/example.sql.gz \
+    opsgang/aws_mysql_client:candidate /run_sql_from_file.sh || RC=1
 
 dc
 

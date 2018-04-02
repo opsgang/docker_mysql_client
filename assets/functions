@@ -91,7 +91,7 @@ if [[ ! -z "$TEST_STUBS" ]]; then
 
         if to_s3 $s
         then
-            f=/fixtures/sql.example
+            f=/fixtures/example.sql
             [[ "$s" =~ .gz$ ]] && f=$f.gz
             cp $f $d
         else
