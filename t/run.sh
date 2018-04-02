@@ -19,8 +19,10 @@ docker run -i --net bridge --rm --name t1 \
 
 docker rm -f t1 2>/dev/null || true
 
+echo "dir:$PWD/t/fixtures"
+ls -l $PWD/t/fixtures
 docker run -i --rm --name t2 \
     -v $PWD/t/fixtures:/fixtures \
     -e DB_HOST -e DB_PASS -e DB_USER \
     -e FILE=/fixtures/sql.example.gz \
-    opsgang/aws_mysql_client:candidate /run_sql_from_file.sh
+    opsgang/aws_mysql_client:candidate /bin/bash -c "ls -l /fixtures"
