@@ -10,17 +10,17 @@ env:
     - STABLE_TAG="stable"
     - JQ="https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux64"
     - DB_HOST=172.17.0.1
-    - DB_USER=t
+    - DB_USER=tester
     - DB_PASS="Pword666"
     - SHIPPABLE_MYSQL_CMD="/usr/bin/mysqld_safe --bind-address=0.0.0.0"
 
 build:
 
   ci:
-    - mysql -e "CREATE USER t@'%' IDENTIFIED BY 'Pword666';" ;
-    - mysql -e "CREATE USER t@'localhost' IDENTIFIED BY 'Pword666';" ;
-      mysql -e "GRANT ALL ON *.* TO t@'%'; FLUSH PRIVILEGES;" ;
-      mysql -e "GRANT ALL ON *.* TO t@'localhost'; FLUSH PRIVILEGES;" ;
+    - mysql -e "CREATE USER 'tester'@'%' IDENTIFIED BY 'Pword666';" ;
+    - mysql -e "CREATE USER 'tester'@'localhost' IDENTIFIED BY 'Pword666';" ;
+      mysql -e "GRANT ALL ON *.* TO 'tester'@'%'; FLUSH PRIVILEGES;" ;
+      mysql -e "GRANT ALL ON *.* TO 'tester'@'localhost'; FLUSH PRIVILEGES;" ;
       mysql -e "CREATE DATABASE example;"
     - curl -O -L $JQ
       && chmod +x jq-linux64
