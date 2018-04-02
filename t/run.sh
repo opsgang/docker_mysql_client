@@ -33,7 +33,7 @@ t_bespoke_cmd() {
     local t="TEST2" rc=0
     local cmd="" exp="" out=""
     echo "=== $t bespoke mysql cmd"
-    exp="example information_schema mysql performance_schema sys"
+    exp="Database example information_schema mysql performance_schema sys"
     cmd="-u $DB_USER -p$DB_PASS -h $DB_HOST"
     out=$(
         set -o pipefail ;
