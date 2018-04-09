@@ -70,7 +70,13 @@ dump() {
 }
 
 to_s3() {
-    [[ $1 =~ ^s3:// ]]
+    if [[ $1 =~ ^s3:// ]] ; then
+        echo "path: is S3? $1"
+        return 0
+    else
+        echo "path: is not S3? $1"
+        return 1
+    fi
 }
 
 TEST_STUBS=${TEST_STUBS:-}
