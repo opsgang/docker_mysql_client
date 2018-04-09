@@ -91,6 +91,7 @@ t_dump_to_gzip_file() {
 
     echo "=== $t /dump.sh to GZIPPED FILE"
     export DUMP_OPTS="--opt --add-drop-database --databases example"
+    echo "out_file: $out_file"
     docker run -i --rm --name $t \
         --volumes-from $SHIPPABLE_CONTAINER_NAME \
         -e DB_HOST -e DB_PASS -e DB_USER \
