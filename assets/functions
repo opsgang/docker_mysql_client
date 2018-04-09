@@ -28,7 +28,7 @@ dump() {
         LDIR=/var/tmp
         LFILE=${LDIR}/$(basename $DEST_PATH)
     else
-        LFILE="$(realpath -- $DEST_PATH)"
+        LFILE="$(realpath --canonicalize-missing -- $DEST_PATH)"
         LDIR="$(dirname $LFILE)"
         if [[ ! -d "$LDIR" ]]; then
             e "... ${THIS_IMAGE_NAME} container directory ($LDIR) does not exist."
